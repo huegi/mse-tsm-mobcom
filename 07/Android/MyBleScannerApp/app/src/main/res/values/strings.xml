@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyBleScannerApp</string>
+    <string name="bleName">Bluetooth device name</string>
+    <string name="bleMac">Bluetooth Mac Address</string>
 </resources>
