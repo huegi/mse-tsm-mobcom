@@ -62,7 +62,12 @@ public class BlePermissionsActivity extends AppCompatActivity {
                 permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
             }
         } else { // if SDK less than 31 we have to ask for bluetooth and location permissions
-            // nothing
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.BLUETOOTH);
+            }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
         }
         return permissions.toArray(new String[permissions.size()]);
     }

@@ -38,6 +38,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.deviceAddress.setText(scanResultsList.get(position).getDeviceAddress());
     }
 
+    public void setScanResults(ArrayList<ScanResultModel> scanResultsList) {
+        this.scanResultsList = scanResultsList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return scanResultsList.size();

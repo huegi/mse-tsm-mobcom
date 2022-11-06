@@ -23,14 +23,14 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:padding="5dp"
-                app:tint="@color/colorTextRecyclerView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/stat_sys_data_bluetooth" />
+                app:srcCompat="@android:drawable/stat_sys_data_bluetooth"
+                app:tint="@color/colorTextRecyclerView" />
 
             <TextView
                 android:id="@+id/textViewName"

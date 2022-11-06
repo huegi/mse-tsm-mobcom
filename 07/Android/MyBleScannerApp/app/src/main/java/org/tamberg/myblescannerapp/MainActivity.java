@@ -92,28 +92,32 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setupRecyclerView");
 
         recyclerView = findViewById(R.id.scanView);
-        ArrayList<ScanResultModel> scanResultsList = new ArrayList<>();
-        scanResultsList.add(new ScanResultModel("Device Name", "Device Address"));
-        scanResultsList.add(new ScanResultModel("Device Name2", "Device Address"));
-        scanResultsList.add(new ScanResultModel("Device Name3", "Device Address"));
-        scanResultsList.add(new ScanResultModel("Device Name4", "Device Address"));
-        scanResultsList.add(new ScanResultModel("Device Name5", "Device Address"));
-        recyclerViewAdapter = new RecyclerViewAdapter(this, scanResultsList);
+        recyclerViewAdapter = new RecyclerViewAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        viewModel = ViewModelProviders.of(this).get(RecyclerViewViewModel.class);
+        viewModel.getUserMutableLiveData().observe(this, scanResults -> {
+            Log.d(TAG, "scanResults changed");
+            recyclerViewAdapter.setScanResults(scanResults);
+            recyclerViewAdapter.notifyDataSetChanged();
+        });
+
+
+//        recyclerView = findViewById(R.id.scanView);
+//        ArrayList<ScanResultModel> scanResultsList = new ArrayList<>();
+//        scanResultsList.add(new ScanResultModel("Device Name", "Device Address"));
+//        scanResultsList.add(new ScanResultModel("Device Name2", "Device Address"));
+//        scanResultsList.add(new ScanResultModel("Device Name3", "Device Address"));
+//        scanResultsList.add(new ScanResultModel("Device Name4", "Device Address"));
+//        scanResultsList.add(new ScanResultModel("Device Name5", "Device Address"));
+//        recyclerViewAdapter = new RecyclerViewAdapter(this, scanResultsList);
+//        recyclerView.setAdapter(recyclerViewAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 //        viewModel = ViewModelProviders.of(this).get(RecyclerViewViewModel.class);
 //        viewModel.getUserMutableLiveData().observe(this, scanResultsObserver);
     }
-
-//    Observer<ArrayList<ScanResultModel>> scanResultsObserver = new Observer<ArrayList<ScanResultModel>>() {
-//        @Override
-//        public void onChanged(ArrayList<ScanResultModel> scanResults) {
-//            Log.d(TAG, "scanResults changed");
-//            Log.d(TAG, "scanResults: " + scanResults.get(0).getDeviceAddress());
-//            recyclerViewAdapter.setScanResults(scanResults);
-//        }
-//    };
 
     // BLE Stuff
     @SuppressLint("MissingPermission")
@@ -145,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
             Log.d(TAG, "onScanResult, result = " + result.getDevice().getAddress() + ", " + result.getDevice().getName());
+
+            viewModel.addScanResult(new ScanResultModel(result.getDevice().getName(), result.getDevice().getAddress()));
         }
 
         @Override
